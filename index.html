@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiscal Bridge | ZIMRA Fiscalisation — Zero Hardware. Zero Fuss.</title>
+<style>
+  :root {
+    --navy: #1B2B4B;
+    --navy-deep: #0F1A2E;
+    --navy-mid: #243355;
+    --orange: #E85D0A;
+    --orange-light: #FF7A2F;
+    --orange-pale: rgba(232,93,10,0.10);
+    --white: #FFFFFF;
+    --off-white: #F5F6F8;
+    --text-dark: #0F1A2E;
+    --text-mid: #3D5280;
+    --text-muted: #6B7FA3;
+    --border: rgba(27,43,75,0.12);
+    --border-light: rgba(255,255,255,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-dark);
+    background: var(--white);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
+  .container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+
+  /* ── NAV ── */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(15,26,46,0.96);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-light);
+    padding: 0 0;
+  }
+  .nav-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 22px; font-weight: 700; color: var(--white);
+    text-decoration: none; letter-spacing: -0.5px;
+  }
+  .logo span { color: var(--orange); }
+  .logo-bridge {
+    width: 36px; height: 28px;
+    position: relative; flex-shrink: 0;
+  }
+  .logo-bridge svg { width: 36px; height: 28px; }
+  nav { display: flex; align-items: center; gap: 32px; }
+  nav a {
+    color: rgba(255,255,255,0.70); font-size: 14px; font-weight: 500;
+    text-decoration: none; transition: color 0.2s;
+    letter-spacing: 0.01em;
+  }
+  nav a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--orange); color: var(--white) !important;
+    padding: 10px 22px; border-radius: 6px; font-weight: 600 !important;
+    font-size: 14px !important; transition: background 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover { background: var(--orange-light); transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy-deep);
+    padding: 100px 0 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232,93,10,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 60px; align-items: center;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--orange-pale); border: 1px solid rgba(232,93,10,0.30);
+    border-radius: 20px; padding: 5px 14px;
+    font-size: 12px; font-weight: 600; color: var(--orange-light);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero-eyebrow-dot {
+    width: 6px; height: 6px; background: var(--orange); border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+  .hero h1 {
+    font-size: 52px; font-weight: 800; color: var(--white);
+    line-height: 1.10; letter-spacing: -1.5px; margin-bottom: 20px;
+  }
+  .hero h1 .accent { color: var(--orange); }
+  .hero-sub {
+    font-size: 18px; color: rgba(255,255,255,0.65);
+    line-height: 1.65; margin-bottom: 36px; max-width: 520px;
+  }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--orange); color: var(--white);
+    padding: 14px 28px; border-radius: 7px; font-size: 15px;
+    font-weight: 600; text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--orange-light); transform: translateY(-2px); }
+  .btn-outline-white {
+    background: transparent; color: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.30);
+    padding: 13px 26px; border-radius: 7px; font-size: 15px;
+    font-weight: 600; text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-block;
+  }
+  .btn-outline-white:hover { border-color: var(--white); }
+
+  /* Hero right panel */
+  .hero-panel {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 16px; padding: 28px;
+  }
+  .hero-panel-title {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 18px;
+  }
+  .price-compare {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-bottom: 20px;
+  }
+  .price-card {
+    padding: 16px; border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .price-card.featured {
+    background: var(--orange-pale);
+    border-color: rgba(232,93,10,0.35);
+  }
+  .price-card-label { font-size: 11px; color: rgba(255,255,255,0.50); margin-bottom: 4px; }
+  .price-card.featured .price-card-label { color: rgba(232,93,10,0.80); }
+  .price-card-value { font-size: 26px; font-weight: 800; color: var(--white); line-height: 1; }
+  .price-card.featured .price-card-value { color: var(--orange-light); }
+  .price-card-note { font-size: 11px; color: rgba(255,255,255,0.40); margin-top: 3px; }
+  .hero-checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .hero-checklist li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; color: rgba(255,255,255,0.70);
+  }
+  .check-icon {
+    width: 18px; height: 18px; flex-shrink: 0;
+    background: rgba(232,93,10,0.20); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .check-icon::after {
+    content: '✓'; font-size: 10px; color: var(--orange-light); font-weight: 700;
+  }
+
+  /* ── TRUST BAR ── */
+  .trust-bar {
+    background: var(--navy); padding: 20px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .trust-inner {
+    display: flex; align-items: center; gap: 40px;
+    justify-content: center; flex-wrap: wrap;
+  }
+  .trust-item {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; color: rgba(255,255,255,0.55); font-weight: 500;
+  }
+  .trust-item strong { color: var(--white); }
+
+  /* ── SECTION GENERIC ── */
+  section { padding: 80px 0; }
+  .section-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--orange);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: 38px; font-weight: 800; color: var(--navy-deep);
+    line-height: 1.18; letter-spacing: -0.8px; margin-bottom: 16px;
+  }
+  .section-sub {
+    font-size: 17px; color: var(--text-muted); max-width: 580px;
+    line-height: 1.65; margin-bottom: 48px;
+  }
+  .section-sub.center { text-align: center; margin-left: auto; margin-right: auto; }
+  .text-center { text-align: center; }
+
+  /* ── INTEGRATIONS ── */
+  .integrations-bg { background: var(--off-white); }
+  .int-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap: 16px;
+  }
+  .int-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px 20px;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .int-card:hover { box-shadow: 0 4px 24px rgba(27,43,75,0.10); transform: translateY(-2px); }
+  .int-card-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--navy-deep); display: flex; align-items: center;
+    justify-content: center; margin-bottom: 14px;
+    font-size: 20px;
+  }
+  .int-card h3 { font-size: 15px; font-weight: 700; color: var(--navy-deep); margin-bottom: 5px; }
+  .int-card p { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5; }
+  .live-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(16,185,89,0.10); border-radius: 20px;
+    padding: 4px 10px; font-size: 11px; font-weight: 700;
+    color: #0A7A3B; letter-spacing: 0.04em;
+  }
+  .live-dot {
+    width: 6px; height: 6px; background: #10B95A; border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  /* ── PROBLEM/SOLUTION ── */
+  .ps-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .ps-col-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 20px; padding-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+  .ps-col-header.problem .ps-badge { background: rgba(220,38,38,0.10); color: #991B1B; }
+  .ps-col-header.solution .ps-badge { background: var(--orange-pale); color: var(--orange); }
+  .ps-badge {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 4px 10px; border-radius: 4px;
+  }
+  .ps-col-title { font-size: 17px; font-weight: 700; color: var(--navy-deep); }
+  .ps-item {
+    display: flex; gap: 14px; margin-bottom: 20px; align-items: flex-start;
+  }
+  .ps-icon {
+    width: 36px; height: 36px; flex-shrink: 0; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; font-size: 16px;
+  }
+  .ps-icon.red { background: rgba(220,38,38,0.10); }
+  .ps-icon.orange { background: var(--orange-pale); }
+  .ps-item-title { font-size: 14px; font-weight: 700; color: var(--navy-deep); margin-bottom: 3px; }
+  .ps-item-text { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+
+  /* ── PRICING ── */
+  .pricing-wrapper {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px; max-width: 800px; margin: 0 auto 40px;
+  }
+  .price-box {
+    border-radius: 16px; padding: 32px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    transition: box-shadow 0.2s;
+  }
+  .price-box:hover { box-shadow: 0 8px 32px rgba(27,43,75,0.10); }
+  .price-box.featured {
+    border-color: var(--orange); background: var(--navy-deep);
+  }
+  .price-box-label {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;
+  }
+  .price-box.featured .price-box-label { color: rgba(232,93,10,0.80); }
+  .price-box-amount {
+    font-size: 42px; font-weight: 900; color: var(--navy-deep);
+    letter-spacing: -1.5px; line-height: 1;
+    margin-bottom: 4px;
+  }
+  .price-box.featured .price-box-amount { color: var(--orange-light); }
+  .price-box-freq { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+  .price-box.featured .price-box-freq { color: rgba(255,255,255,0.50); }
+  .price-box-features { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .price-box-features li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; color: var(--text-mid);
+  }
+  .price-box.featured .price-box-features li { color: rgba(255,255,255,0.75); }
+  .price-box-features li::before {
+    content: '✓'; font-size: 12px; font-weight: 800;
+    color: var(--orange); flex-shrink: 0;
+  }
+  .tcl-table {
+    width: 100%; border-collapse: collapse; font-size: 14px;
+    margin-top: 40px;
+  }
+  .tcl-table th {
+    padding: 12px 16px; text-align: left; font-size: 12px;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-muted); border-bottom: 1px solid var(--border);
+    background: var(--off-white);
+  }
+  .tcl-table td { padding: 13px 16px; border-bottom: 1px solid var(--border); }
+  .tcl-table tr:last-child td { border-bottom: none; }
+  .tcl-table .col-fb { color: var(--orange); font-weight: 700; }
+  .tcl-table .col-comp { color: var(--text-muted); }
+
+  /* ── DEPLOYMENT ── */
+  .deploy-bg { background: var(--navy-deep); }
+  .deploy-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  .deploy-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 14px; padding: 32px;
+  }
+  .deploy-card-icon {
+    width: 48px; height: 48px; border-radius: 10px;
+    background: var(--orange-pale); border: 1px solid rgba(232,93,10,0.30);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 18px;
+  }
+  .deploy-card h3 { font-size: 19px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+  .deploy-card p { font-size: 14px; color: rgba(255,255,255,0.60); line-height: 1.65; }
+  .deploy-card ul {
+    list-style: none; margin-top: 18px;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .deploy-card ul li {
+    font-size: 13px; color: rgba(255,255,255,0.65);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .deploy-card ul li::before { content: '→'; color: var(--orange); font-weight: 700; }
+
+  /* ── SUPPORT ── */
+  .support-tiers { display: flex; flex-direction: column; gap: 0; }
+  .tier {
+    display: flex; gap: 24px; padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: flex-start;
+  }
+  .tier:last-child { border-bottom: none; }
+  .tier-number {
+    width: 44px; height: 44px; flex-shrink: 0;
+    border-radius: 50%; background: var(--navy-deep);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: var(--white);
+  }
+  .tier-content h3 { font-size: 16px; font-weight: 700; color: var(--navy-deep); margin-bottom: 4px; }
+  .tier-content p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+  .tier-sla {
+    margin-left: auto; flex-shrink: 0;
+    text-align: right;
+  }
+  .sla-critical { font-size: 13px; font-weight: 700; color: #C53030; }
+  .sla-label { font-size: 11px; color: var(--text-muted); }
+
+  /* ── PARTNERS ── */
+  .partner-bg { background: var(--off-white); }
+  .partner-options { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .partner-card {
+    background: var(--white); border: 1.5px solid var(--border);
+    border-radius: 14px; padding: 28px;
+    transition: box-shadow 0.2s;
+  }
+  .partner-card:hover { box-shadow: 0 6px 28px rgba(27,43,75,0.10); }
+  .partner-card.best {
+    border-color: var(--orange);
+  }
+  .partner-card-badge {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; background: var(--orange-pale);
+    color: var(--orange); padding: 4px 10px; border-radius: 4px;
+    display: inline-block; margin-bottom: 14px;
+  }
+  .partner-payout {
+    font-size: 34px; font-weight: 900; color: var(--navy-deep);
+    letter-spacing: -1px; margin-bottom: 4px;
+  }
+  .partner-card h3 { font-size: 17px; font-weight: 700; color: var(--navy-deep); margin-bottom: 10px; }
+  .partner-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 16px; }
+  .partner-ideal {
+    font-size: 12px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 8px;
+  }
+  .partner-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 12px; background: var(--off-white); border: 1px solid var(--border);
+    color: var(--text-mid); padding: 4px 10px; border-radius: 20px;
+  }
+  .tiers-table {
+    width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 36px;
+  }
+  .tiers-table th {
+    text-align: left; padding: 12px 16px; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-muted); border-bottom: 1px solid var(--border);
+    background: var(--white);
+  }
+  .tiers-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .tiers-table tr:last-child td { border-bottom: none; }
+  .tier-badge {
+    font-size: 11px; font-weight: 700; padding: 3px 8px;
+    border-radius: 4px; letter-spacing: 0.04em;
+  }
+  .tier-badge.t1 { background: var(--off-white); color: var(--text-mid); }
+  .tier-badge.t2 { background: rgba(232,93,10,0.10); color: var(--orange); }
+  .tier-badge.t3 { background: var(--navy-deep); color: var(--white); }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: var(--navy-deep); text-align: center; padding: 100px 0;
+  }
+  .cta-section h2 {
+    font-size: 44px; font-weight: 800; color: var(--white);
+    letter-spacing: -1px; margin-bottom: 16px;
+  }
+  .cta-section h2 .accent { color: var(--orange); }
+  .cta-section p {
+    font-size: 18px; color: rgba(255,255,255,0.60);
+    max-width: 540px; margin: 0 auto 36px; line-height: 1.65;
+  }
+  .cta-actions { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #080F1C; padding: 40px 0;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-inner {
+    display: flex; justify-content: space-between;
+    align-items: center; flex-wrap: wrap; gap: 16px;
+  }
+  .footer-logo {
+    font-size: 16px; font-weight: 700; color: var(--white);
+    letter-spacing: -0.3px;
+  }
+  .footer-logo span { color: var(--orange); }
+  footer p { font-size: 13px; color: rgba(255,255,255,0.35); }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a {
+    font-size: 13px; color: rgba(255,255,255,0.45);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-links a:hover { color: rgba(255,255,255,0.80); }
+  .zimra-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(16,185,89,0.12); border: 1px solid rgba(16,185,89,0.25);
+    border-radius: 20px; padding: 4px 12px;
+    font-size: 12px; font-weight: 700; color: #10B95A;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 36px; }
+    .hero-panel { display: none; }
+    .ps-grid { grid-template-columns: 1fr; }
+    .pricing-wrapper { grid-template-columns: 1fr; }
+    .deploy-grid { grid-template-columns: 1fr; }
+    .partner-options { grid-template-columns: 1fr; }
+    nav { display: none; }
+    .section-title { font-size: 28px; }
+    .trust-inner { justify-content: flex-start; }
+    .footer-inner { flex-direction: column; text-align: center; }
+    .footer-links { justify-content: center; }
+    .tier { flex-direction: column; }
+    .tier-sla { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<header>
+  <div class="container nav-inner">
+    <a href="#" class="logo">
+      <div class="logo-bridge">
+        <svg viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 22 Q18 6 32 22" stroke="#E85D0A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <rect x="9" y="10" width="3" height="12" rx="1.5" fill="#1B2B4B"/>
+          <rect x="15" y="6" width="3" height="16" rx="1.5" fill="#1B2B4B"/>
+          <rect x="21" y="9" width="3" height="13" rx="1.5" fill="#E85D0A"/>
+          <rect x="27" y="13" width="3" height="9" rx="1.5" fill="#E85D0A"/>
+        </svg>
+      </div>
+      Fiscal<span>Bridge</span>
+    </a>
+    <nav>
+      <a href="#integrations">Integrations</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#architecture">Deployment</a>
+      <a href="#partners">Partners</a>
+      <a href="#support">Support</a>
+      <a href="#contact" class="nav-cta">Book a Demo</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-eyebrow">
+          <span class="hero-eyebrow-dot"></span>
+          100% ZIMRA Certified · Powered by Sagehill Business Solutions
+        </div>
+        <h1>ZIMRA Compliance.<br><span class="accent">Zero Hardware.</span><br>Zero Surprises.</h1>
+        <p class="hero-sub">
+          The only fiscalisation gateway with native GAAP POS integration. Connect your ERP, run your invoices, and stay ZIMRA-compliant — from $180 once-off and $80 a year. That's it.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn-primary">Get Started — Book a Demo</a>
+          <a href="#pricing" class="btn-outline-white">See Full Pricing</a>
+        </div>
+      </div>
+      <div>
+        <div class="hero-panel">
+          <p class="hero-panel-title">Your total cost of ownership — year one</p>
+          <div class="price-compare">
+            <div class="price-card featured">
+              <p class="price-card-label">Fiscal Bridge</p>
+              <p class="price-card-value">$260</p>
+              <p class="price-card-note">Setup + Year 1. All-in.</p>
+            </div>
+            <div class="price-card">
+              <p class="price-card-label">Leading competitor</p>
+              <p class="price-card-value">$380+</p>
+              <p class="price-card-note">Before add-ons kick in</p>
+            </div>
+          </div>
+          <ul class="hero-checklist">
+            <li><span class="check-icon"></span>Native GAAP POS integration — only us</li>
+            <li><span class="check-icon"></span>Sage, Xero &amp; QuickBooks — live today</li>
+            <li><span class="check-icon"></span>5 years data retention, included</li>
+            <li><span class="check-icon"></span>Backdating — $0 extra, always</li>
+            <li><span class="check-icon"></span>Unlimited invoice volume</li>
+            <li><span class="check-icon"></span>On-premise or cloud — your choice</li>
+            <li><span class="check-icon"></span>99.9% uptime SLA guaranteed</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-inner">
+      <div class="trust-item"><span class="zimra-badge">✓ ZIMRA Certified</span></div>
+      <div class="trust-item">🏢 <strong>50,000+</strong>&nbsp;VAT businesses in Zimbabwe — all need this</div>
+      <div class="trust-item">💰 <strong>$80/yr</strong>&nbsp;flat — no tiers, no traps</div>
+      <div class="trust-item">🔗 <strong>GAAP POS</strong>&nbsp;— native, live, only us</div>
+      <div class="trust-item">🛡️ <strong>On-Premise</strong>&nbsp;or Cloud — your data, your call</div>
+    </div>
+  </div>
+</div>
+
+<!-- INTEGRATIONS -->
+<section id="integrations" class="integrations-bg">
+  <div class="container">
+    <p class="section-eyebrow text-center">Ecosystem</p>
+    <h2 class="section-title text-center">Stop waiting for "Coming Soon."<br>Our integrations are live today.</h2>
+    <p class="section-sub center">Every major accounting system. GAAP POS. All connected, all tested, all working right now — not promised for next quarter.</p>
+    <div class="int-grid">
+      <div class="int-card">
+        <div class="int-card-icon">🖥️</div>
+        <h3>GAAP POS System</h3>
+        <p>The only fiscalisation provider with deep, native GAAP POS integration. Zero middleware. Zero custom scripts.</p>
+        <span class="live-badge"><span class="live-dot"></span>Live &amp; Native</span>
+      </div>
+      <div class="int-card">
+        <div class="int-card-icon">📊</div>
+        <h3>Sage Evolution &amp; Pastel</h3>
+        <p>Automated ledger-to-ZIMRA mapping. Works with Pastel Partner, Pastel Express, and Sage Evolution.</p>
+        <span class="live-badge"><span class="live-dot"></span>Live &amp; Connected</span>
+      </div>
+      <div class="int-card">
+        <div class="int-card-icon">☁️</div>
+        <h3>Xero Accounting Cloud</h3>
+        <p>Real-time cloud webhook sync. Every invoice you raise in Xero is fiscalised the moment it's created.</p>
+        <span class="live-badge"><span class="live-dot"></span>Live Integration</span>
+      </div>
+      <div class="int-card">
+        <div class="int-card-icon">📚</div>
+        <h3>QuickBooks Desktop &amp; Online</h3>
+        <p>Seamless compliance syncing for both the desktop and cloud editions. No manual uploads needed.</p>
+        <span class="live-badge"><span class="live-dot"></span>Live Integration</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM / SOLUTION -->
+<section>
+  <div class="container">
+    <p class="section-eyebrow">Why Fiscal Bridge</p>
+    <h2 class="section-title">The old way is expensive.<br>And it breaks.</h2>
+    <p class="section-sub">Hardware-based fiscalisation costs thousands to set up and hundreds to maintain. We built the alternative.</p>
+    <div class="ps-grid">
+      <div>
+        <div class="ps-col-header problem">
+          <span class="ps-badge">The old way</span>
+          <span class="ps-col-title">Problems with legacy fiscal systems</span>
+        </div>
+        <div class="ps-item">
+          <div class="ps-icon red">🖨️</div>
+          <div>
+            <p class="ps-item-title">Hardware that fails when you need it most</p>
+            <p class="ps-item-text">Physical fiscal printers jam, overheat, and break. When they stop, your sales stop. A replacement unit costs $800–$1,000 and takes days to arrive.</p>
+          </div>
+        </div>
+        <div class="ps-item">
+          <div class="ps-icon red">💸</div>
+          <div>
+            <p class="ps-item-title">Hidden fees that pile up every year</p>
+            <p class="ps-item-text">Backdating invoices: $100 extra. Custom receipt templates: $2.31 per template. Extra data storage beyond 30 days: billed annually. The costs never stop.</p>
+          </div>
+        </div>
+        <div class="ps-item">
+          <div class="ps-icon red">🔗</div>
+          <div>
+            <p class="ps-item-title">"Coming soon" integrations that never arrive</p>
+            <p class="ps-item-text">Competitors list GAAP POS and popular ERPs on their website. Look closer — they're marked "coming soon." You sign up. You wait. Nothing happens.</p>
+          </div>
+        </div>
+        <div class="ps-item">
+          <div class="ps-icon red">📅</div>
+          <div>
+            <p class="ps-item-title">Only 30 days of data — ZIMRA audits go back years</p>
+            <p class="ps-item-text">Standard tier plans cap data at 30 days. A ZIMRA audit can request records going back years. You pay extra for what should be standard.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="ps-col-header solution">
+          <span class="ps-badge">Fiscal Bridge</span>
+          <span class="ps-col-title">How we solve every one of these</span>
+        </div>
+        <div class="ps-item">
+          <div class="ps-icon orange">💻</div>
+          <div>
+            <p class="ps-item-title">Software that runs on what you already own</p>
+            <p class="ps-item-text">Fiscal Bridge runs on your existing computers, tablets, or servers. Nothing to buy, nothing to break, nothing to replace. Turn any screen into a compliant ZIMRA terminal.</p>
+          </div>
+        </div>
+        <div class="ps-item">
+          <div class="ps-icon orange">🔒</div>
+          <div>
+            <p class="ps-item-title">One price. Everything included.</p>
+            <p class="ps-item-text">$180 setup. $80 per year per device. Backdating included. Custom templates included. Unlimited invoices included. 5 years data included. No surprises — ever.</p>
+          </div>
+        </div>
+        <div class="ps-item">
+          <div class="ps-icon orange">⚡</div>
+          <div>
+            <p class="ps-item-title">All integrations live on day one</p>
+            <p class="ps-item-text">GAAP POS, Sage, Xero, QuickBooks — all tested, all connected, all live. You can verify this during your demo. No promises. No timelines. Working now.</p>
+          </div>
+        </div>
+        <div class="ps-item">
+          <div class="ps-icon orange">🗄️</div>
+          <div>
+            <p class="ps-item-title">5 years of data retention, built in</p>
+            <p class="ps-item-text">Every invoice, every transaction, stored and searchable for 5 full years. When ZIMRA audits come — and they do — your records are ready. At no extra charge.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="background:var(--off-white);">
+  <div class="container">
+    <p class="section-eyebrow text-center">Pricing</p>
+    <h2 class="section-title text-center">Simple pricing. No catch.</h2>
+    <p class="section-sub center">One setup fee. One annual fee. Everything included. No tiers, no add-ons, no invoice caps, no data limits, no backdating charges.</p>
+    <div class="pricing-wrapper">
+      <div class="price-box">
+        <p class="price-box-label">Setup fee — once-off</p>
+        <p class="price-box-amount">$180</p>
+        <p class="price-box-freq">Paid once per device, ever</p>
+        <ul class="price-box-features">
+          <li>Full ZIMRA integration &amp; certification</li>
+          <li>ERP / POS connection configured</li>
+          <li>ZIMRA public key setup</li>
+          <li>Staff training &amp; onboarding</li>
+          <li>Test invoice validation included</li>
+        </ul>
+      </div>
+      <div class="price-box featured">
+        <p class="price-box-label">Annual license — per device</p>
+        <p class="price-box-amount">$80</p>
+        <p class="price-box-freq">Per year, per device — that's $6.67/month</p>
+        <ul class="price-box-features">
+          <li>Unlimited invoice volume</li>
+          <li>5 years data retention</li>
+          <li>Backdating at $0 extra</li>
+          <li>All integrations included</li>
+          <li>WhatsApp support &amp; helpdesk</li>
+          <li>99.9% uptime guarantee</li>
+        </ul>
+      </div>
+    </div>
+    <table class="tcl-table">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Fiscal Bridge</th>
+          <th>Competitors (Fiscal Harmony)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Setup cost</td><td class="col-fb">$180 once-off</td><td class="col-comp">$46.20+ per branch (+ extras)</td></tr>
+        <tr><td>Annual fee</td><td class="col-fb">$80 flat</td><td class="col-comp">$192–$336/year on monthly billing</td></tr>
+        <tr><td>Data retention</td><td class="col-fb">5 years — included</td><td class="col-comp">30 days standard; 1 year on enterprise</td></tr>
+        <tr><td>Backdating invoices</td><td class="col-fb">$0 — always included</td><td class="col-comp">$100 add-on fee</td></tr>
+        <tr><td>Receipt / invoice templates</td><td class="col-fb">Included</td><td class="col-comp">$2.31 per template</td></tr>
+        <tr><td>Invoice volume</td><td class="col-fb">Unlimited</td><td class="col-comp">700/month on standard tier</td></tr>
+        <tr><td>GAAP POS integration</td><td class="col-fb">✓ Native, live today</td><td class="col-comp">✗ Not available</td></tr>
+        <tr><td>On-premise deployment</td><td class="col-fb">✓ Included</td><td class="col-comp">✗ Cloud-only</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- DEPLOYMENT -->
+<section id="architecture" class="deploy-bg">
+  <div class="container">
+    <p class="section-eyebrow text-center" style="color:rgba(232,93,10,0.80);">Deployment</p>
+    <h2 class="section-title text-center" style="color:var(--white);">Your data. Your infrastructure. Your choice.</h2>
+    <p class="section-sub center" style="color:rgba(255,255,255,0.55);">Corporate data sovereignty or rapid cloud deployment — Fiscal Bridge supports both, with no price difference between them.</p>
+    <div class="deploy-grid">
+      <div class="deploy-card">
+        <div class="deploy-card-icon">🏢</div>
+        <h3>On-Premise Server Deployment</h3>
+        <p>All transaction logs, invoice data, and ZIMRA communications stay inside your corporate firewall. Ideal for enterprises with internal IT security requirements or data residency policies.</p>
+        <ul>
+          <li>Full control of your data footprint</li>
+          <li>Works inside your existing network</li>
+          <li>No cloud dependency for daily operations</li>
+          <li>Suitable for banks, pharma, government</li>
+        </ul>
+      </div>
+      <div class="deploy-card">
+        <div class="deploy-card-icon">☁️</div>
+        <h3>Secure Local Cloud Hosting</h3>
+        <p>Zero infrastructure to manage. We host everything on resilient local servers in Zimbabwe. Activate in minutes, access from any device, and let us handle the uptime.</p>
+        <ul>
+          <li>Live in under 10 minutes</li>
+          <li>Access from any device or browser</li>
+          <li>Zero hardware or server costs</li>
+          <li>Automatic backups and updates</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPORT -->
+<section id="support">
+  <div class="container">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start;">
+      <div>
+        <p class="section-eyebrow">Support</p>
+        <h2 class="section-title">If your fiscal gateway stops, your business stops.<br>We make sure that never happens.</h2>
+        <p class="section-sub">Our 3-tier support system is designed to resolve 80% of issues automatically, with human experts on standby for everything else.</p>
+        <a href="#contact" class="btn-primary" style="display:inline-block; margin-top:8px;">Talk to our support team</a>
+      </div>
+      <div class="support-tiers">
+        <div class="tier">
+          <div class="tier-number" style="background:var(--orange);">1</div>
+          <div class="tier-content">
+            <h3>WhatsApp Bot &amp; Self-Service Portal</h3>
+            <p>Check ZIMRA connection status, reset credentials, pull logs, and manage renewals instantly from your phone. Handles 80% of all queries with zero wait time.</p>
+          </div>
+          <div class="tier-sla">
+            <p class="sla-label">Response</p>
+            <p class="sla-critical" style="color:var(--orange);">Instant</p>
+          </div>
+        </div>
+        <div class="tier">
+          <div class="tier-number" style="background:var(--navy-mid);">2</div>
+          <div class="tier-content">
+            <h3>Cloud Help Desk — Human Agents</h3>
+            <p>Two dedicated certified support engineers handle custom integrations, server adjustments, and remote interventions via secure desktop access.</p>
+          </div>
+          <div class="tier-sla">
+            <p class="sla-label">Critical issues</p>
+            <p class="sla-critical">&lt;15 min</p>
+          </div>
+        </div>
+        <div class="tier">
+          <div class="tier-number" style="background:var(--navy-deep);">3</div>
+          <div class="tier-content">
+            <h3>Engineering Escalation — Sagehill Core Team</h3>
+            <p>Complex issues escalate directly to the Sagehill software development team for hotfix patches and system-level resolutions.</p>
+          </div>
+          <div class="tier-sla">
+            <p class="sla-label">Uptime SLA</p>
+            <p class="sla-critical" style="color:#0A7A3B;">99.9%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<section id="partners" class="partner-bg">
+  <div class="container">
+    <p class="section-eyebrow">Partner Program</p>
+    <h2 class="section-title">Earn passive income.<br>Bring clients. We handle the rest.</h2>
+    <p class="section-sub">Accountants, IT firms, POS technicians, and tax consultants — build a recurring income stream by introducing Fiscal Bridge to your existing client base.</p>
+    <div class="partner-options">
+      <div class="partner-card best">
+        <span class="partner-card-badge">Option A — Instant cashflow</span>
+        <p class="partner-payout">$30</p>
+        <h3>Upfront Per-Device Payout</h3>
+        <p>Earn $30 cash for every device you activate. Paid within 7 business days of successful ZIMRA registration. No waiting, no conditions beyond a live device.</p>
+        <p class="partner-ideal">Best for:</p>
+        <div class="partner-tags">
+          <span class="tag">IT technicians</span>
+          <span class="tag">POS installers</span>
+          <span class="tag">Hardware resellers</span>
+          <span class="tag">Freelance implementers</span>
+        </div>
+      </div>
+      <div class="partner-card">
+        <span class="partner-card-badge">Option B — Recurring annuity</span>
+        <p class="partner-payout">15%</p>
+        <h3>Annual Recurring Commission</h3>
+        <p>Earn 15% ($12/year) on every $80 annual renewal for as long as the client stays active. Build a passive portfolio — 100 active devices = $1,200/year in passive income.</p>
+        <p class="partner-ideal">Best for:</p>
+        <div class="partner-tags">
+          <span class="tag">Accounting firms</span>
+          <span class="tag">Tax consultants</span>
+          <span class="tag">Audit practices</span>
+          <span class="tag">Bookkeepers</span>
+        </div>
+      </div>
+    </div>
+    <table class="tiers-table" style="background:var(--white); border-radius:12px; overflow:hidden; border:1px solid var(--border);">
+      <thead>
+        <tr>
+          <th>Partner tier</th>
+          <th>Active devices</th>
+          <th>Bonus</th>
+          <th>Extra perks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tier-badge t1">Tier 1 — Authorized Agent</span></td>
+          <td>1–19 devices</td>
+          <td>Standard rate (A or B)</td>
+          <td>Digital partner toolkit, helpdesk access</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t2">Tier 2 — Certified Partner</span></td>
+          <td>20–49 devices</td>
+          <td>+$5/device (A) or +2% recurring (B)</td>
+          <td>Regional lead referrals from your area</td>
+        </tr>
+        <tr>
+          <td><span class="tier-badge t3">Tier 3 — Elite Alliance</span></td>
+          <td>50+ devices</td>
+          <td>Custom enterprise volume pricing</td>
+          <td>Co-branded marketing, dedicated sandbox line</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact" class="cta-section">
+  <div class="container">
+    <h2>Ready to move <span class="accent">beyond hardware?</span></h2>
+    <p>Join forward-thinking Zimbabwean businesses making the switch to software-driven ZIMRA compliance. Book a 10-minute live demo and see Fiscal Bridge connect to your accounting system in real time.</p>
+    <div class="cta-actions">
+      <a href="mailto:sales@fiscalbridge.co.zw" class="btn-primary">Book a 10-Minute Demo</a>
+      <a href="https://wa.me/263XXXXXXXXX" class="btn-outline-white">WhatsApp Us Now</a>
+    </div>
+    <p style="margin-top:24px; font-size:13px; color:rgba(255,255,255,0.35);">
+      Powered by Sagehill Business Solutions · Harare, Zimbabwe · 100% ZIMRA Certified
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div>
+        <p class="footer-logo">Fiscal<span>Bridge</span></p>
+        <p style="margin-top:4px;">Powered by Sagehill Business Solutions</p>
+      </div>
+      <div class="footer-links">
+        <a href="#integrations">Integrations</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#architecture">Deployment</a>
+        <a href="#partners">Partners</a>
+        <a href="#support">Support</a>
+      </div>
+      <div>
+        <span class="zimra-badge">✓ 100% ZIMRA Compliant</span>
+        <p style="margin-top:8px;">&copy; 2026 Fiscal Bridge. All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
